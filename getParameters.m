@@ -1,4 +1,4 @@
-function m = getModel(parametersSetName)
+function m = getModel(parameterSetName)
   
   % Model
   m.g = 9.81;                 % Gravitational acceleration
