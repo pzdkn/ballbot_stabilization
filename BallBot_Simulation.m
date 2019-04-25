@@ -4,24 +4,23 @@ clc; clear; close all;
 [A,B,C,D] = getModel();
 
 
-% Task b) compute LQR controller for xz- and yz-plane
-Q = [ 20    0   0    0;...
-       0  100   0    0;...
-       0    0  10    0;...
-       0    0   0   50];
-       
-R = 200;
+% LQR Controller
+Q = diag([50 , 20, 50, 20, 100, 500, 100, 500, 100, 101]);
+R = eye(3,3);
 
-Ky = lqr(A, b, Q, R)';
-Kx = Ky;
+sys = ss(A,B,C,D);
+[K,~,~] = lqr(sys,Q,R);
 
-% Task c) compute preamplifier gains
-Vy = 1/(C(:,1)' * inv(b*Ky'-A) * b);
-Vx = Vy;
-
+%{
+%Task c) compute preamplifier gains
+Vy = 1/(C(:,1)' * inv(b*Ky'-A) * b)
+Vx = Vy
+%}
+%{
 % parameters for PD-controller in xy-planerot
 kp = 0.5;
 kd = 2.0*sqrt(m.c_m*kp);
+%}
 
 % start simulation
 clientInfo = startSimulation();
