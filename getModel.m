@@ -9,10 +9,10 @@
 %   B [10x3]    := Input Matrix
 %   C [10x10]   := Output Matrix
 %   D [10x3]    := Durchschlagsmatrix ??
+%   m           := Struct saving system parameters
 %-----------------------------------------------------------------
 
-function [A,B,C,D] = getModel()
-getParameters("ETH");
+function [A,B,C,D,m] = getModel()
 syms g l mAW mK rK rW ThetaKi ThetaWi AThetaAWx AThetaAWy AThetaAWz
 param = [g,l,mAW,mK,rK,rW,ThetaKi,ThetaWi,AThetaAWx,AThetaAWy,AThetaAWz];
 %% A
@@ -658,7 +658,7 @@ C = eye(10);
 %% D 
 D = zeros(10,3);
 %% Linearization + Parameter Initialization
-   Parameters_ETH;
+   m = getParameters("ETH");
    params = [m.g,m.l,m.mAWs,m.mK,m.rK,m.rW,m.ThetaK,m.ThetaW,m.AThetaAWx,m.AThetaAWy,m.AThetaAWz];
    A = double(subs(A_,param,params));
    B  =double(subs(B_,param,params));
