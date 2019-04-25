@@ -5,29 +5,23 @@
 %   clientInfo  [3x1] Handle for communication with simulator
 %-----------------------------------------------------------------
 % return:
-%   x         [1x12]  Current state of BallRobot x = [ phi_x,  phi_y,  phi_z,  theta_x,  theta_y,  theta_z,
-%                                                    dphi_x, dphi_y, dphi_z, dtheta_x, dtheta_y, dtheta_z]'
+%   x         [1x12]  Current state of BallRobot x = [theta_x; dtheta_x; theta_y; dtheta_y; theta_z
+%                                                       dtheta_z;phi_x;dphi_x;phi_y;dphi_y]'
 %                     phi: Orientation of ball
 %                     theta: Orientation of body
-%   Rz        [3x3]   Rotation from world to robot frame around z-Axis
-%   ball_pos  [3x1]   Current ball position
+%   ball_pos  [2x1]   Current ball position
 %   target    [3x1]   Current target position
 %-----------------------------------------------------------------
 
-function [x, Rz, ball_pos, target] = getSimState(clientInfo)
+function [x, ball_pos, target] = getSimState(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
 
-  % rotate all states given in world around z in body frame to get robot local system
-  gamma = robot_state(6);
-  Rz = [ cos(gamma)  -sin(gamma) 0;...
-         sin(gamma)   cos(gamma) 0;...
-         0            0          1]';
-  %Rz = eye(3,3);
-  %    ball orientation     body orientation     ball velocity        body velocity
-  x = [Rz*robot_state(1:3)'; Rz*robot_state(4:6)'; Rz*robot_state(7:9)'; Rz*robot_state(10:12)'];
+  x = [robot_state(4);robot_state(10);robot_state(5);robot_state(11);...
+      robot_state(6);robot_state(12);robot_state(1);robot_state(7);...
+      robot_state(2);robot_state(8)];
   
-  ball_pos = robot_state(13:15)';
+  ball_pos = robot_state(13:14)';
 
   target = robot_state(16:18)';
 
