@@ -10,9 +10,9 @@ function m = getModel(parametersSetName)
         m.rW = 0.06;            % Radius of the omniwheels
         m.ThetaK = 0.0239;      % Inertia of the ball
         m.ThetaW = 0.00315;     % Inertia of 1 omniwheel + 1 motor
-        m.AThetaAWxs = 2.026;   % Inertia of body along x axis
-        m.AThetaAWys = 2.025;   % Inertia of body along y axis
-        m.AThetaAWzs = 0.092;   % Inertia of body along z axis
+        m.AThetaAWx = 2.026;   % Inertia of body along x axis
+        m.AThetaAWy = 2.025;   % Inertia of body along y axis
+        m.AThetaAWz = 0.092;   % Inertia of body along z axis
         m.mAWs = 12.2;          % Total body mass
            
   end

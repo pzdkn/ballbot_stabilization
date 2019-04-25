@@ -16,7 +16,8 @@
 function [x, ball_pos, target] = getSimState(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
-
+  %Transformation to robot local frame is skipped, to see if it work
+  %without it. Don't know if its valid to rotate angles.
   x = [robot_state(4);robot_state(10);robot_state(5);robot_state(11);...
       robot_state(6);robot_state(12);robot_state(1);robot_state(7);...
       robot_state(2);robot_state(8)];

@@ -1,23 +1,8 @@
 clc; clear; close all;
-%pkg load control
 
 % load system model
-m = getModel();
+[A,B,C,D] = getModel();
 
-% Task a) compute system matrices
-A = [0 1 0                                                           0;
-     0 0 (-(m.c_2+m.c_4)*m.g*m.gamma)/(m.c_1*m.c_3-(m.c_2+m.c_4)^2)  0;
-     0 0                   0                                         1;
-     0 0 (m.c_1*m.g*m.gamma)/(m.c_1*m.c_3-(m.c_2+m.c_4)^2)           0];
-       
-b = [0;
-     ( (m.c_2+m.c_3+m.c_4)*m.c_5)/(m.c_1*m.c_3-(m.c_2+m.c_4)^2) ;
-     0;
-     (-(m.c_1+m.c_2+m.c_4)*m.c_5)/(m.c_1*m.c_3-(m.c_2+m.c_4)^2) ];
-       
-C = eye(4);
-
-d = zeros(4,1);
 
 % Task b) compute LQR controller for xz- and yz-plane
 Q = [ 20    0   0    0;...
