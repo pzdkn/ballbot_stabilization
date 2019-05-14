@@ -14,6 +14,17 @@ function m = getModel(parameterSetName)
         m.AThetaAWy = 2.025;   % Inertia of body along y axis
         m.AThetaAWz = 0.092;   % Inertia of body along z axis
         m.mAWs = 12.2;          % Total body mass
-           
+      case "Alex"
+        m.l = 0.55;   
+        m.mK = 10.0;   
+        m.rK = 0.15;                 
+        m.rW = 0.05;                % Radius of the omniwheels    
+        m.ThetaK = 9.000e-03;
+        m.ThetaW = 1.000e-03;   % Where do I get Inertia of actual wheels instead of virtual wheels ?
+        m.AThetaAWx =  5.896e-02/2;
+        m.AThetaAWy = 5.896e-02/2;
+        m.AThetaAWz = 1.125e-02;
+        mA = 26.0;  % Mass of body
+        m.mAWs = m.mK + mA;         
   end
 end

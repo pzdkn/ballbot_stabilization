@@ -13,31 +13,28 @@
 %   target    [3x1]   Current target position
 %-----------------------------------------------------------------
 
-function [x, ball_pos, target] = getSimState(clientInfo)
+function [theta,dtheta ,ball_pos,ball_vel,target] = getSimState(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
   %Transformation to robot local frame is skipped, to see if it work
   %without it. Don't know if its valid to rotate angles.
-  theta_x = robot_state(4);
-  dtheta_x = robot_state(10);
-  theta_y = robot_state(5);
-  dtheta_y = robot_state(11);
-  theta_z = robot_state(6);
-  dtheta_z = robot_state(12);
-  phi_x = robot_state(1);
-  dphi_x = robot_state(7);
-  phi_y = robot_state(2);
-  dphi_y = robot_state(8);
- 
-  x=[theta_x; dtheta_x; theta_y; dtheta_y; theta_z;...
-      dtheta_z;phi_x;dphi_x;phi_y;dphi_y];
   
-  ball_pos = robot_state(13:14)';
-
-  target = robot_state(16:18)';
+  %theta
+  alpha = robot_state(4);
+  beta = robot_state(5);
+  gamma = robot_state(6);
+  [theta_x, theta_y, theta_z] = convertEulerAngle(alpha,beta,gamma);
+  theta = [theta_x, theta_y, theta_z];
+  %dtheta
+  dalpha_x = robot_state(10);
+  dbeta_y = robot_state(11);
+  dgamma_z = robot_state(12);
+  [dtheta_x, dtheta_y, dtheta_z] = convertEulerAngle(dalpha_x, dbeta_y,dgamma_z);
+  dtheta = [dtheta_x, dtheta_y, dtheta_z];
+  ball_pos = robot_state(13:14);
+  ball_vel = robot_state(7:9);
+  target = robot_state(16:18);
   
-  %instead of returning x as measured, we return directly the residuals
-  %from targeted position and orientation 
   
 
 end
