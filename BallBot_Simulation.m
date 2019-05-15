@@ -5,10 +5,14 @@ clc; clear; close all;
 
 % LQR Controller
 Q = diag([1000 , 500, 1000, 500, 40, 20, 20, 10, 20, 10]);
-R = 1*eye(3,3);
+R = 100*eye(3,3);
 
 sys = ss(A,B,C,D);
-[K,~,~] = lqr(sys,Q,R);
+[K, ~, ~] = lqr(sys,Q,R);
+
+K = [22.34 4.63 0.0 0.0 -0.36 -0.29 0.36 0.53 0 0;
+    -11.17 -2.32 19.34 4.01 -0.36 -0.29 -0.18 -0.26 0.31 0.46;
+    -11.17 -2.32 -19.34 -4.01 -0.36 -0.29 -0.18 -0.26 -0.32 -0.46];
 
 
 % start simulation
@@ -50,7 +54,7 @@ for t=0:dt:max_t
 
   u = -K*x;
 
-  setVMotorTorques(clientInfo, u);
+  setMotorTorques(clientInfo, u);
 
   % record data for plotting
   POS = [POS ball_pos];

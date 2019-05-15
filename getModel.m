@@ -658,7 +658,7 @@ C = eye(10);
 %% D 
 D = zeros(10,3);
 %% Linearization + Parameter Initialization
-   m = getParameters("Alex");
+   m = getParameters("ETH");
    params = [m.g,m.l,m.mAWs,m.mK,m.rK,m.rW,m.ThetaK,m.ThetaW,m.AThetaAWx,m.AThetaAWy,m.AThetaAWz];
    A = double(subs(A_,param,params));
    B  =double(subs(B_,param,params));
