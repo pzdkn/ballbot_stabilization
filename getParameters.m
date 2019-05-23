@@ -1,4 +1,4 @@
-function m = getModel(parameterSetName)
+function m = getParameters(parameterSetName)
   
   % Model
   m.g = 9.81;                 % Gravitational acceleration
@@ -25,6 +25,6 @@ function m = getModel(parameterSetName)
         m.AThetaAWy = 5.896e-02/2;
         m.AThetaAWz = 1.125e-02;
         mA = 26.0;  % Mass of body
-        m.mAWs = m.mK + mA;         
+        m.mAWs = m.mK + mA;    
   end
 end
