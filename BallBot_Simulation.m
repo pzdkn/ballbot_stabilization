@@ -41,16 +41,18 @@ for t=0:dt:max_t
   target_ori = target(3);
   
   %set up state vector
-  x(1) = theta(1);
-  x(2) = dtheta(1);
-  x(3) = theta(2);
-  x(4) = dtheta(2);
-  x(5) = theta(3);
-  x(6) = dtheta(3);
-  x(7) = ball_pos(1)/m.rK;
-  x(8) = ball_vel(1)/m.rK;
-  x(9) = ball_pos(2)/m.rK;
-  x(10) = ball_vel(2)/m.rK;
+  x(1) = theta(1); %theta_x
+  x(2) = dtheta(1); %dtheta_dx
+  x(3) = theta(2); %theta_y
+  x(4) = dtheta(2); %dtheta_dy
+  x(5) = theta(3); %theta_z
+  x(6) = dtheta(3); %dtheta_dz
+  %In the ETH thesis, dphi is the angular velocity whereas phi is the
+  %integral thereof
+  x(7) = ball_pos(2)/m.rK; %phi_x = p_y/rK where p_y := y position of ball (no slip condition)
+  x(8) = ball_vel(1); %dphi_dx
+  x(9) = ball_pos(1)/m.rK; %phi_y = p_x/rK where p_x := x position of ball (no slip condition)
+  x(10) = ball_vel(2); %dphi_dy
 
   u = -K*x;
 

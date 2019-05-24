@@ -33,7 +33,11 @@ function [theta,dtheta ,ball_pos,ball_vel,target] = getSimState(clientInfo)
   dbeta_dy = robot_state(11);
   dgamma_dz = robot_state(12);
   [dtheta_x, dtheta_y, dtheta_z] = convertEulerAngle(dalpha_dx, dbeta_dy,dgamma_dz);
-  dtheta = [dtheta_x, dtheta_y, dtheta_z];
+  dtheta = [dtheta_x; dtheta_y; dtheta_z];
+  J_inv = [1, sin(theta_x)*tan(theta_y), cos(theta_x)*tan(theta_y);
+            0, cos(theta_x) , -sin(theta_x);
+            0, sin(theta_x)/cos(theta_y), cos(theta_x)/cos(theta_y)];
+  dtheta = J_inv * dtheta;
   %dtheta = [dalpha_dx, dbeta_dy, dgamma_dz];
   %dtheta = [dgamma_dz, dbeta_dy, dalpha_dx];
   %dtheta = [dbeta_dy, dgamma_dz, dalpha_dx];
