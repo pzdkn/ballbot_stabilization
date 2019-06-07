@@ -4,8 +4,8 @@ clc; clear; close all;
 [A,B,C,D,m] = getModel();
 
 % LQR Controller
-Q = diag([1000 , 500, 1000, 500, 40, 20, 20, 10, 20, 10]);
-R = 10*eye(3,3);
+Q = 0.5*diag([1000 , 500, 1000, 500, 40, 20, 20, 10, 20, 10]);
+R = 100*eye(3,3);
 
 sys = ss(A,B,C,D);
 [K, ~, ~] = lqr(sys,Q,R);
@@ -50,9 +50,13 @@ for t=0:dt:max_t
   %In the ETH thesis, dphi is the angular velocity whereas phi is the
   %integral thereof
   x(7) = ball_pos(2)/m.rK; %phi_x = p_y/rK where p_y := y position of ball (no slip condition)
+  %x(7) = 0;
   x(8) = ball_vel(1); %dphi_dx
+  %x(8) = 0;
   x(9) = ball_pos(1)/m.rK; %phi_y = p_x/rK where p_x := x position of ball (no slip condition)
+  %x(9) = 0
   x(10) = ball_vel(2); %dphi_dy
+  %x(10) = 0;
 
   u = -K*x;
 
