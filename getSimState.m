@@ -13,39 +13,38 @@
 %   target    [3x1]   Current target position
 %-----------------------------------------------------------------
 
-function [theta,dtheta ,ball_pos,ball_vel,target] = getSimState(clientInfo)
+function [theta, dtheta, ball_pos, dphi,target, Rz] = getSimState(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
   
-  %theta
+  %theta := body orientation
   alpha = robot_state(4);
   beta = robot_state(5);
   gamma = robot_state(6);
   [theta_x, theta_y, theta_z] = convertEulerAngle(alpha,beta,gamma);
-  %theta_x = alpha; theta_y = beta; theta_z = gamma;
-  theta = [theta_x, theta_y, theta_z];
-  %theta = [gamma, beta, alpha];
-  %theta = [beta, gamma, alpha];
-  %dtheta
+  Rz = [ cos(theta_z)  -sin(theta_z) 0;...
+         sin(theta_z)   cos(theta_z) 0;...
+         0            0          1]';
+  theta = Rz*[theta_x; theta_y; theta_z];
+  %dtheta := body angular velocity
   dalpha_dx = robot_state(10);
   dbeta_dy = robot_state(11);
   dgamma_dz = robot_state(12);
   [dtheta_x, dtheta_y, dtheta_z] = convertEulerAngle(dalpha_dx, dbeta_dy,dgamma_dz);
-  %dtheta_x = dalpha_dx; dtheta_y = dbeta_dy; dtheta_z = dgamma_dz;
-  dtheta = [dtheta_x; dtheta_y; dtheta_z];
+  dtheta = Rz*[dtheta_x; dtheta_y; dtheta_z];
+  
   % Here we convert measured angular velocity of the body frame to
   % derivatives of the state variables
 %   J_inv = [1, sin(theta_x)*tan(theta_y), cos(theta_x)*tan(theta_y);
 %             0, cos(theta_x) , -sin(theta_x);
 %             0, sin(theta_x)/cos(theta_y), cos(theta_x)/cos(theta_y)];
 %   dtheta = J_inv * dtheta;
-  %dtheta = [dalpha_dx, dbeta_dy, dgamma_dz];
-  %dtheta = [dgamma_dz, dbeta_dy, dalpha_dx];
-  %dtheta = [dbeta_dy, dgamma_dz, dalpha_dx];
+
+  % ball position 
   ball_pos = robot_state(13:14);
-  ball_vel = robot_state(7:9);
+  % dphi := ball angular velocity
+  dphi = Rz*robot_state(7:9)';
+  % target position
   target = robot_state(16:18);
   
-  
-
 end

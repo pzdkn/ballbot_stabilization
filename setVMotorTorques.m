@@ -31,6 +31,6 @@ function real_torques=setVMotorTorques(clientInfo, torques)
   %torques = 1/3 * [ torques(3) + 2*(torques(1)*cb-torques(2)*sb)/ca;...
   %                  torques(3) + (sb*(-sqrt(3)*torques(1)+torques(2)) - cb*( torques(1)+sqrt(3)*torques(2)))/ca;...
   %                  torques(3) + (sb*( sqrt(3)*torques(1)+torques(2)) + cb*(-torques(1)+sqrt(3)*torques(2)))/ca];
-  real_torques = A*torques
+  real_torques = A*torques;
   setMotorTorques(clientInfo, real_torques);
 end
