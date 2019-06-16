@@ -16,16 +16,14 @@
 function [theta,dtheta ,ball_pos,ball_vel,target] = getSimState(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
-  %Transformation to robot local frame is skipped, to see if it work
-  %without it. Don't know if its valid to rotate angles.
   
   %theta
   alpha = robot_state(4);
   beta = robot_state(5);
   gamma = robot_state(6);
   [theta_x, theta_y, theta_z] = convertEulerAngle(alpha,beta,gamma);
+  %theta_x = alpha; theta_y = beta; theta_z = gamma;
   theta = [theta_x, theta_y, theta_z];
-  %theta = [alpha, beta, gamma];
   %theta = [gamma, beta, alpha];
   %theta = [beta, gamma, alpha];
   %dtheta
@@ -33,11 +31,14 @@ function [theta,dtheta ,ball_pos,ball_vel,target] = getSimState(clientInfo)
   dbeta_dy = robot_state(11);
   dgamma_dz = robot_state(12);
   [dtheta_x, dtheta_y, dtheta_z] = convertEulerAngle(dalpha_dx, dbeta_dy,dgamma_dz);
+  %dtheta_x = dalpha_dx; dtheta_y = dbeta_dy; dtheta_z = dgamma_dz;
   dtheta = [dtheta_x; dtheta_y; dtheta_z];
-  J_inv = [1, sin(theta_x)*tan(theta_y), cos(theta_x)*tan(theta_y);
-            0, cos(theta_x) , -sin(theta_x);
-            0, sin(theta_x)/cos(theta_y), cos(theta_x)/cos(theta_y)];
-  dtheta = J_inv * dtheta;
+  % Here we convert measured angular velocity of the body frame to
+  % derivatives of the state variables
+%   J_inv = [1, sin(theta_x)*tan(theta_y), cos(theta_x)*tan(theta_y);
+%             0, cos(theta_x) , -sin(theta_x);
+%             0, sin(theta_x)/cos(theta_y), cos(theta_x)/cos(theta_y)];
+%   dtheta = J_inv * dtheta;
   %dtheta = [dalpha_dx, dbeta_dy, dgamma_dz];
   %dtheta = [dgamma_dz, dbeta_dy, dalpha_dx];
   %dtheta = [dbeta_dy, dgamma_dz, dalpha_dx];
