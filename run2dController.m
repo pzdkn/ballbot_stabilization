@@ -42,7 +42,7 @@ clientInfo = startSimulation();
 U = [];
 
 dt = 0.05; % time step in [s]
-max_t = 1; % sim duration in [s]
+max_t = 10; % sim duration in [s]
 for t=0:dt:max_t
   % get robot state
    [theta, dtheta, ball_pos, dphi,target, Rz] = getSimState(clientInfo);
@@ -63,18 +63,44 @@ for t=0:dt:max_t
   % get system state
   yz =  [phi(1) dphi(1) theta(1) dtheta(1)]';
   xz = -[phi(2) dphi(2) theta(2) dtheta(2)]'; % change direction due to defintion of model
-  xy =  [dphi(3) theta(3) dtheta(3)]';
+  xy =  [theta(3) dtheta(3)]';
   
   % Task d) compute new output
   u = [-Kx'*yz ;...
        -Ky'*xz ;...
-       -(-kp*(target_or-xy(2)) - kd*(0-xy(3)))];
+       -(-kp*(target_or-xy(1)) - kd*(0-xy(2)))];
+  
+ 
+   % Test K Matrix :
+%    K1 = [Kx(3), Kx(4), 0, 0, 0, 0, Kx(1), Kx(2), 0, 0];
+%    K2 = [0, 0, Ky(3), Ky(4), 0, 0, 0, 0, Ky(1), Ky(2)];
+%    K3 = [0, 0, 0, 0, kp, kd, 0, 0, 0, 0];
+%    K = [K1; K2; K3];
 
-  u_real = setVMotorTorques(clientInfo, u);
-
+%      alpha = pi/4;     % work angle of wheel
+%      beta = pi/2;      % angle offset between axis of first wheel and x-axis of robot
+%   
+%       sa = sin(alpha);
+%       ca = cos(alpha);
+%       sb = sin(beta);
+%       cb = cos(beta);
+%   
+%       A = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
+%             -(cb+sqrt(3)*sb)/(3*ca)    (-sb+sqrt(3)*cb)/(3*ca)   1/(3*sa);...
+%              (-cb+sqrt(3)*sb)/(3*ca)  -(sb+sqrt(3)*cb)/(3*ca)    1/(3*sa)];  
+% 
+     K1 = [Kx', 0, 0, 0, 0, 0, 0];
+     K2 = [0, 0, 0, 0, Ky', 0, 0];
+     K3 = [0,0,0,0,0,0,0,0,kp,kd];
+     K = [K1; K2; K3];
+     x = [yz;xz;xy];
+     %u_ = -K*[yz;xz;xy];
+     u_real = setVMotorTorques(clientInfo, K, x);
+%      K_real = A*diag([1,-1,1])*K;
+%      u_real = -K_real*[yz;xz;xy];
+%      setMotorTorques(clientInfo, u_real);
   % record data for plotting
-  U = [U u_real];
-
+    U = [U u_real];
   % trigger simulation step
   clientInfo.vrep.simxSynchronousTrigger(clientInfo.clientID); 
 end
