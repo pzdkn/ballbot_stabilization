@@ -63,8 +63,7 @@ for t=0:dt:max_t
     % get ball controller target theta_z
     tor = target(3);
     phi = Rz*[-bpos(2)/m.rK; bpos(1)/m.rK; 0];
-    x = [x(4);x(10);x(5);x(11);x(6);x(12);phi(1);x(7);phi(2);x(8)];
-    tar = [0;0;0;0;tor;0;tpos(1);0;tpos(2);0];
+    x = [x(4);x(10);x(5);x(11);x(6);x(12);p
     % Test K Matrix :
     % K adapted reordered state variables based on 3d model
     K1 = [Kx(3), Kx(4), 0, 0, 0, 0, Kx(1), Kx(2), 0, 0];
@@ -72,7 +71,7 @@ for t=0:dt:max_t
     K3 = [0, 0, 0, 0, kp, kd, 0, 0, 0, 0];
     K = [K1; K2; K3];
     K = (T*diag([1,-1,1])*K);
-    u = K*(tar-x);
+    u = K*(t-x);
     setMotorTorques(clientInfo, u);
     U = [U u];
   % trigger simulation step

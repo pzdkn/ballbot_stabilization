@@ -16,8 +16,8 @@ function m = getParameters(parameterSetName)
         m.mAWs = 12.2;          % Total body mass
       case "Alex_3D"
         m.l = 0.55;   
-        m.mK = 10.0; 
-        m.mA = 26.0;  % Mass of body
+        m.mK = 3; 
+        m.mA = 12.0;  % Mass of body
         m.rK = 0.15;                 
         m.rW = 0.05;                % Radius of the omniwheels    
         m.ThetaK = 9.000e-03;

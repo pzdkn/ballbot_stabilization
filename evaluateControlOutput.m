@@ -4,8 +4,8 @@ close all;
 q = [100, 50, 100, 50, 40, 20, 20, 10, 20, 10];
 r = [100, 100, 100];
 rho = 0.01;
-%[U_2d, dt, max_t] = run2dController();
-[U_3d, dt, max_t] = run3dController(q,r,rho);
+[U_2d, dt, max_t] = run2dController();
+%[U_3d, dt, max_t] = run3dController(q,r,rho);
 %subplot(121)
 hold on
 t = 0:dt:max_t;
