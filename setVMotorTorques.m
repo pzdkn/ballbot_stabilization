@@ -12,26 +12,20 @@
 % return:
 %-----------------------------------------------------------------
 
-function real_torques=setVMotorTorques(clientInfo, K, x)
+function [real_torques]=setVMotorTorques(clientInfo, torques)
   
   %torques(2) = -torques(2); % change direction due to defintion of model
-  %torques = diag([1,-1,1])*torques;
   alpha = pi/4;     % work angle of wheel
-  beta = pi/2;      % angle offset between axis of first wheel and x-axis of robot
+  beta = pi/3;      % angle offset between axis of first wheel and x-axis of robot
   
   sa = sin(alpha);
   ca = cos(alpha);
   sb = sin(beta);
   cb = cos(beta);
   
-  A = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
+  T = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
         -(cb+sqrt(3)*sb)/(3*ca)    (-sb+sqrt(3)*cb)/(3*ca)   1/(3*sa);...
          (-cb+sqrt(3)*sb)/(3*ca)  -(sb+sqrt(3)*cb)/(3*ca)    1/(3*sa)];     
-  
-  %torques = 1/3 * [ torques(3) + 2*(torques(1)*cb-torques(2)*sb)/ca;...
-  %                  torques(3) + (sb*(-sqrt(3)*torques(1)+torques(2)) - cb*( torques(1)+sqrt(3)*torques(2)))/ca;...
-  %                  torques(3) + (sb*( sqrt(3)*torques(1)+torques(2)) + cb*(-torques(1)+sqrt(3)*torques(2)))/ca];
-  K_real = (A*diag([1,-1,1])*K);
-  real_torques = -K_real*x;
+  real_torques = T*torques;
   setMotorTorques(clientInfo, real_torques);
 end

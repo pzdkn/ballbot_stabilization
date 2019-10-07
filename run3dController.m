@@ -31,7 +31,7 @@ U = []
 iterations = 0;
 for t=0:dt:max_t
   % get robot state
-  [theta, dtheta, dtheta0, ball_pos, dphi,target] = getSimState(clientInfo);
+  [theta, dtheta, dtheta0, ball_pos, dphi,target] = getSimState3D(clientInfo);
   iterations = iterations +1;
 %   if mod(iterations,10) == 0
 %       disp("--------------------")

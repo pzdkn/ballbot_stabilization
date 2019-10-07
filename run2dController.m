@@ -44,7 +44,7 @@ ca = cos(alpha);
 sb = sin(beta);
 cb = cos(beta);
 
-A = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
+T = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
         -(cb+sqrt(3)*sb)/(3*ca)    (-sb+sqrt(3)*cb)/(3*ca)   1/(3*sa);...
          (-cb+sqrt(3)*sb)/(3*ca)  -(sb+sqrt(3)*cb)/(3*ca)    1/(3*sa)];  
 %%     
@@ -54,26 +54,26 @@ clientInfo = startSimulation();
 U = [];
 
 dt = 0.05; % time step in [s]
-max_t = 10; % sim duration in [s]
+max_t = 20; % sim duration in [s]
 for t=0:dt:max_t
   % get robot state
     [x, Rz, bpos, target] = getSimState2D(clientInfo);
     % get position controller target [x y]
-    tpos = Rz*[target(1:2);0];
+    tphi = Rz*[-target(2)/m.rK; target(1)/m.rK;0];
     % get ball controller target theta_z
     tor = target(3);
     phi = Rz*[-bpos(2)/m.rK; bpos(1)/m.rK; 0];
     x = [x(4);x(10);x(5);x(11);x(6);x(12);phi(1);x(7);phi(2);x(8)];
-    tar = [0;0;0;0;tor;0;tpos(1);0;tpos(2);0];
+    tar = [0;0;0;0;tor;0;tphi(1);0;tphi(2);0];
     % Test K Matrix :
     % K adapted reordered state variables based on 3d model
     K1 = [Kx(3), Kx(4), 0, 0, 0, 0, Kx(1), Kx(2), 0, 0];
     K2 = [0, 0, Ky(3), Ky(4), 0, 0, 0, 0, Ky(1), Ky(2)];
     K3 = [0, 0, 0, 0, kp, kd, 0, 0, 0, 0];
     K = [K1; K2; K3];
-    K = (T*diag([1,-1,1])*K);
+    %K = (T*diag([1,-1,1])*K);
     u = K*(tar-x);
-    setMotorTorques(clientInfo, u);
+    u = setVMotorTorques(clientInfo, u);
     U = [U u];
   % trigger simulation step
   clientInfo.vrep.simxSynchronousTrigger(clientInfo.clientID); 

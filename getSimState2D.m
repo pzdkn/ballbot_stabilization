@@ -19,6 +19,7 @@ function [x, Rz, ball_pos, target] = getSimState(clientInfo)
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
 
   % rotate all states given in world around z in body frame to get robot local system
+  robot_state = robot_state';
   gamma = robot_state(6);
   Rz = [ cos(gamma)  -sin(gamma) 0;...
          sin(gamma)   cos(gamma) 0;...
