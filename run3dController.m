@@ -31,14 +31,7 @@ U = []
 iterations = 0;
 for t=0:dt:max_t
   % get robot state
-  [theta, dtheta, dtheta0, ball_pos, dphi,target] = getSimState3D(clientInfo);
-  iterations = iterations +1;
-%   if mod(iterations,10) == 0
-%       disp("--------------------")
-%       disp(["XYZ dtheta", dtheta0])
-%       disp(["ZYX dtheta", dtheta])
-%   end
-  % get position of target in x y coordinates
+  [theta, dtheta, ball_pos, dphi,target] = getSimState3D(clientInfo);
   tpos = target(1:2);
   % get orientation of target as angle around z-axis
   tori = target(3);
@@ -56,32 +49,12 @@ for t=0:dt:max_t
       phi(1); dphi(1); phi(2); dphi(2)];
   e = tvec-x;
   % Controller
-  %u = K*e;
-  u = zeros(3,1);
-  % setMotorTorques(clientInfo, u);
+  K = [32.7967237481395,6.81869003123556,-4.80417049864658e-13,-1.10487392114583e-13,-0.129099444873580,-0.179025478053225,0.258198889747183,0.733803465029754,-8.27414403312820e-15,-2.33136774607709e-14;-16.3983618740701,-3.40934501561787,28.3974630078044,5.90219285866928,-0.129099444873581,-0.179025478053225,-0.129099444873598,-0.366901732514894,0.223606797749984,0.635462966777390;-16.3983618740694,-3.40934501561770,-28.3974630078040,-5.90219285866918,-0.129099444873581,-0.179025478053226,-0.129099444873588,-0.366901732514861,-0.223606797749976,-0.635462966777368];
+  u = K*e;
+  setMotorTorques(clientInfo, u);
   % record data for plotting
   U = [U, u];
   % trigger simulation step
   clientInfo.vrep.simxSynchronousTrigger(clientInfo.clientID);  
 end
 endSimulation(clientInfo)
-%% OLD 
-
-% % Adapt to 2D K
-% K_ = zeros(size(K))
-% K_(:,1) = -K(:,3);
-% K_(:,2) = -K(:,4);
-% K_(:,3) = K(:,1);
-% K_(:,4) = K(:,2);
-% K_(:,5) = -K(:,5);
-% K_(:,6) = -K(:,6);
-% K_(:,7) = -K(:,9);
-% K_(:,8) = -K(:,10);
-% K_(:,9) = K(:,7);
-% K_(:,10) = K(:,8);
-
-% Adapt to ETH K
-% K_ = -K;
-% K_(:,5) = K(:,5);
-% K_(:,6) = K(:,6);
-

@@ -8,9 +8,9 @@
 %-----------------------------------------------------------------
 %% Test 1.1
 % Inital ZYX angles
-ax = pi/16; ay = -pi/4; az = pi/10;
-ei = [ax,ay,az];
-qi = eul2quat(ax,ay,az,'rzyx');
+ax = pi/4; ay = 0; az = 0;
+ei = [0,0,0];
+qi = eul2quat(ax, ay, az,'rzyx');
 clientInfo = startSimulation();
 simCallScriptFunction(clientInfo, 'set_body_orientation', [], qi , [],'')
 % Obtain ZYX angle 

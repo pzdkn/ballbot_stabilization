@@ -72,7 +72,7 @@ T = [  (2*cb)/(3*ca)             (2*sb)/(3*ca)             1/(3*sa);...
      (-cb+sqrt(3)*sb)/(3*ca)  -(sb+sqrt(3)*cb)/(3*ca)    1/(3*sa)]; 
 K2D = T*K2D;
 % 3D Gain 
-Q3D = diag([q(3),q(4),q(3),q(4),0,0,q(1),q(2),q(1),q(2)]);
+Q3D = diag([q(3),q(4),q(3),q(4),10,10,q(1),q(2),q(1),q(2)]);
 R3D = diag([r,r,r]);
 sys = ss(A3D,B3D,C3D,D3D);
 [K3D, ~, ~] = lqr(sys,Q3D,R3D);
