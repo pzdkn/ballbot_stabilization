@@ -15,7 +15,7 @@ function m = getParameters(parameterSetName)
         m.AThetaAWz = 0.092;   % Inertia of body along z axis
         m.mAWs = 12.2;          % Total body mass
       case "Alex_3D"
-        m.l = 0.45;   
+        m.l = 0.55;   
         m.mK = 10; 
         m.mA = 20.0;  % Mass of body
         m.rK = 0.15;                 
@@ -24,10 +24,10 @@ function m = getParameters(parameterSetName)
         m.ThetaW = 2.000e-03;   % ThetaOW +ThetaM (Wheel + Motor)
         m.AThetaAWx =  5.896e-02;
         % Steiner : Inertia is given in reference to ball center
-        m.AThetaAWx = m.AThetaAWx*m.mA  + m.mA*m.l^2;
+        m.AThetaAWx = m.AThetaAWx*m.mA %  + m.mA*m.l^2;
         m.AThetaAWy = 5.896e-02;
         % Steiner 
-        m.AThetaAWy = m.AThetaAWy*m.mA + m.mA*m.l^2;
+        m.AThetaAWy = m.AThetaAWy*m.mA % + m.mA*m.l^2;
         m.AThetaAWz = 1.125e-02*m.mA;
         m.mAWs = m.mK + m.mA;   
       case "Alex_2D"

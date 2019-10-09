@@ -1,6 +1,6 @@
 function [quaternion] = eul2quat(ai,aj,ak,axes)
     AXES2CELL.rxyz = {2, 1, 0, 1};
-    AXES2CELL.rzyx = {0, 0, 0, 1};
+    AXES2CELL.rzyx = {0, 0, 0, 0};
     NEXT_AXIS = [2, 3, 1, 2];
     configs = AXES2CELL.(axes);
     firstaxis = configs{1} +1;

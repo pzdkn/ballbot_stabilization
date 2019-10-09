@@ -8,14 +8,14 @@
 %-----------------------------------------------------------------
 %% Test 1.1
 % Inital ZYX angles
-ax = pi/4; ay = 0; az = 0;
-ei = [0,0,0];
-qi = eul2quat(ax, ay, az,'rzyx');
+ax = pi/8; ay = pi/4; az = pi/4;
+ei = [ax,ay,az];
+qi = eul2quat(ax, ay, az,'rxyz');
 clientInfo = startSimulation();
 simCallScriptFunction(clientInfo, 'set_body_orientation', [], qi , [],'')
 % Obtain ZYX angle 
 [res retInts qo retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_body_orientation',[],[],[],'');
-eo = quat2eul(qo,'rzyx');
+eo = quat2eul(qo,'rxyz');
 % Test 1 passed. However ay should be contained within (-pi/2, pi/2),
 % otherwise input and output angles are not equal. Is that singularity ?
 %% Test 1.2
