@@ -1,9 +1,9 @@
 clc;
 clear;
 close all;
-q = [100, 50, 100, 50, 40, 20, 20, 10, 20, 10];
+q = [10, 50, 10, 50, 5, 20, 20, 100, 20, 100];
 r = [100, 100, 100];
-rho = 0.01;
+rho = 2;
 %[U_2d, dt, max_t] = run2dController();
 [U_3d, dt, max_t] = run3dController(q,r,rho);
 %subplot(121)

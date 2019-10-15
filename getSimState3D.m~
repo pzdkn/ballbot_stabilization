@@ -19,10 +19,11 @@ function [theta, dtheta, ball_pos, dphi,target] = getSimState3D(clientInfo)
   q = [x,y,z,w];
   theta = quat2eul(q, 'rzyx');
   ty = theta(2); tz = theta(3);
-  RLI =  [cos(tz), sin(tz), 0; -sin(tz), cos(tz), 0 ; 0, 0, 1]; 
-  dtheta = [robot_state(11); robot_state(12); robot_state(13)];
-  dphi = [robot_state(8); robot_state(9); robot_state(10)];
-  dphi = RLI*dphi;
+  Jinv = [ (cos(tz)*sin(ty))/cos(ty), (sin(ty)*sin(tz))/cos(ty), 1;
+                         -sin(tz),                   cos(tz), 0;
+                  cos(tz)/cos(ty),           sin(tz)/cos(ty), 0];
+  dtheta = J*[robot_state(11); robot_state(12); robot_state(13)];
+  dphi = [robot_state(8), robot_state(9), robot_state(10)];
   ball_pos = [robot_state(14), robot_state(15)];
   target = [robot_state(17), robot_state(18), robot_state(19)];
 end
