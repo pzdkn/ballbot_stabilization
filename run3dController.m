@@ -20,8 +20,8 @@ function [U, dt, max_t] = run3dController(q,r,rho)
 Q = diag(q);
 R = rho * diag(r);
 sys = ss(A,B,C,D);
-[K, ~, ~] = lqr(sys,Q,R);
-
+[K, ~, e] = lqr(sys,Q,R);
+K(:,5:6) = -K(:,5:6);
 % start simulation
 clientInfo = startSimulation();
 

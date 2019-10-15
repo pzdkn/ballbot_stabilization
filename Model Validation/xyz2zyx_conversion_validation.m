@@ -8,7 +8,7 @@
 %-----------------------------------------------------------------
 %% Test 1.1
 % Inital ZYX angles
-ax = 0; ay = pi/4; az = pi/4;
+ax = 0; ay = 0; az = pi/4 + pi ;
 ei = [ax,ay,az];
 qi = eul2quat(ax, ay, az,'rzyx');
 clientInfo = startSimulation();
