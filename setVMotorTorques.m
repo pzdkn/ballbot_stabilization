@@ -16,7 +16,7 @@ function [real_torques]=setVMotorTorques(clientInfo, torques)
   
   %torques(2) = -torques(2); % change direction due to defintion of model
   alpha = pi/4;     % work angle of wheel
-  beta = pi/3;      % angle offset between axis of first wheel and x-axis of robot
+  beta = pi/2;      % angle offset between axis of first wheel and x-axis of robot
   
   sa = sin(alpha);
   ca = cos(alpha);

@@ -1,4 +1,4 @@
-function [U, dt, max_t] = run3dController(q,r,rho)
+function [O] = run3dController(q,r,rho,max_t,dt)
 %-----------------------------------------------------------------
 % This function computes the gain matrix and evaluates the controller in
 % vrep
@@ -25,9 +25,9 @@ K(:,5:6) = -K(:,5:6);
 % start simulation
 clientInfo = startSimulation();
 
-dt = 0.05; % time step in [s]
-max_t = 200; % sim duration in [s]
-U = []
+U = [];
+X = [];
+E = [];
 for t=0:dt:max_t
   % get robot state
   [theta, dtheta, ball_pos, dphi,target] = getSimState3D(clientInfo);
@@ -52,7 +52,13 @@ for t=0:dt:max_t
   setMotorTorques(clientInfo, u);
   % record data for plotting
   U = [U, u];
+  X = [X, x];
+  E = [E, e];
   % trigger simulation step
   clientInfo.vrep.simxSynchronousTrigger(clientInfo.clientID);  
 end
 endSimulation(clientInfo)
+O.X = X;
+O.E = E;
+O.U = U;
+end

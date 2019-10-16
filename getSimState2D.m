@@ -14,7 +14,7 @@
 %   target    [3x1]   Current target position
 %-----------------------------------------------------------------
 
-function [x, Rz, ball_pos, target] = getSimState(clientInfo)
+function [x, Rz, ball_pos, target] = getSimState2D(clientInfo)
   
   [res retInts robot_state retStrings retBuffer] = simCallScriptFunction(clientInfo, 'get_sim_state',[],[],[],'');
 

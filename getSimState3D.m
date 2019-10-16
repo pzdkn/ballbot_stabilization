@@ -18,7 +18,7 @@ function [theta, dtheta, ball_pos, dphi,target] = getSimState3D(clientInfo)
   w = robot_state(7); 
   q = [x,y,z,w];
   theta = quat2eul(q, 'rzyx');
-  ty = theta(2); tz = theta(3);
+  tz = theta(3);
   RLI =  [cos(tz), sin(tz), 0; -sin(tz), cos(tz), 0 ; 0, 0, 1]; 
   dtheta = [robot_state(11); robot_state(12); robot_state(13)];
   dphi = [robot_state(8); robot_state(9); robot_state(10)];
