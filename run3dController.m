@@ -21,6 +21,7 @@ Q = diag(q);
 R = rho * diag(r);
 sys = ss(A,B,C,D);
 [K, ~, e] = lqr(sys,Q,R);
+% This is some hack to stabilize all that 
 K(:,5:6) = -K(:,5:6);
 % start simulation
 clientInfo = startSimulation();
@@ -61,4 +62,5 @@ endSimulation(clientInfo)
 O.X = X;
 O.E = E;
 O.U = U;
+O.T = tvec;
 end

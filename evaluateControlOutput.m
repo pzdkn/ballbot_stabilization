@@ -4,7 +4,7 @@ close all;
 q = [10, 50, 10, 50, 5, 20, 20, 100, 20, 100];
 r = [100, 100, 100];
 rho = 2;
-max_t = 10; %[s]
+max_t = 500; %[s]
 dt = 0.05; % time step in [s]
 %% Run 2D Model
 [O2D] = run2dController(max_t,dt);
